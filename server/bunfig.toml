@@ -1,0 +1,5 @@
+[test]
+# The preload script boots an in-memory MongoDB REPLICA SET (transactions are
+# required by the hash-chain append path) and pins the environment variables
+# the server reads.  It is loaded once per test process.
+preload = ["./tests/setup.js"]
