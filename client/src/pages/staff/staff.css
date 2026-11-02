@@ -1,0 +1,475 @@
+/* ========================================
+   STAFF — SCAN TICKET PAGE
+   Full-screen dark scanner overlay
+   ======================================== */
+
+/* ---------- Layout ---------- */
+.scan-page {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  animation: fadeIn var(--transition-slow);
+}
+
+/* ---------- Header ---------- */
+.scan-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 2px solid var(--accent-purple);
+}
+
+.scan-header-close {
+  position: absolute;
+  left: var(--space-xl);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.scan-header-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--accent-purple-light);
+}
+
+.scan-header-title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* ---------- Scanner Body ---------- */
+.scan-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2xl) var(--space-xl);
+  gap: var(--space-lg);
+}
+
+/* ---------- Viewfinder ---------- */
+.scan-viewfinder-wrapper {
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Purple corner brackets */
+.scan-viewfinder-wrapper::before,
+.scan-viewfinder-wrapper::after,
+.scan-viewfinder-inner::before,
+.scan-viewfinder-inner::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: var(--accent-purple);
+  border-style: solid;
+  border-width: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Top-left corner */
+.scan-viewfinder-wrapper::before {
+  top: 0;
+  left: 0;
+  border-top-width: 3px;
+  border-left-width: 3px;
+  border-radius: 6px 0 0 0;
+}
+
+/* Top-right corner */
+.scan-viewfinder-wrapper::after {
+  top: 0;
+  right: 0;
+  border-top-width: 3px;
+  border-right-width: 3px;
+  border-radius: 0 6px 0 0;
+}
+
+/* Bottom-left corner */
+.scan-viewfinder-inner::before {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 3px;
+  border-left-width: 3px;
+  border-radius: 0 0 0 6px;
+}
+
+/* Bottom-right corner */
+.scan-viewfinder-inner::after {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 3px;
+  border-right-width: 3px;
+  border-radius: 0 0 6px 0;
+}
+
+/* Camera placeholder area */
+.scan-camera-area {
+  width: 85%;
+  height: 85%;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Scanning line animation */
+.scan-camera-area::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+  animation: scanLine 2.5s ease-in-out infinite;
+  box-shadow: 0 0 12px 2px rgba(124, 92, 252, 0.4);
+}
+
+@keyframes scanLine {
+  0%, 100% {
+    top: 20%;
+    opacity: 0.3;
+  }
+  50% {
+    top: 75%;
+    opacity: 1;
+  }
+}
+
+/* Targeting crosshairs inside the camera area */
+.scan-crosshair {
+  width: 60%;
+  height: 60%;
+  position: relative;
+}
+
+.scan-crosshair::before,
+.scan-crosshair::after {
+  content: '';
+  position: absolute;
+  border-color: rgba(124, 92, 252, 0.5);
+  border-style: solid;
+  border-width: 0;
+}
+
+.scan-crosshair::before {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-width: 1px;
+  border-radius: var(--radius-sm);
+}
+
+.scan-camera-icon {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.scan-camera-text {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-align: center;
+  padding: 0 var(--space-md);
+}
+
+/* ---------- Manual Entry Link ---------- */
+.scan-manual-link {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  background: none;
+  transition: color var(--transition-fast);
+  margin-top: var(--space-sm);
+}
+
+.scan-manual-link:hover {
+  color: var(--accent-purple-light);
+}
+
+/* ---------- Manual Code Entry ---------- */
+.scan-manual-entry {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  animation: fadeInUp 0.3s ease;
+}
+
+.scan-manual-input {
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  transition: border-color var(--transition-fast);
+}
+
+.scan-manual-input:focus {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 0 3px var(--accent-purple-glow);
+}
+
+.scan-manual-input::placeholder {
+  color: var(--text-muted);
+  font-family: var(--font-family);
+  letter-spacing: 0;
+}
+
+.scan-verify-btn {
+  padding: var(--space-md) var(--space-xl);
+  background: var(--accent-purple);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(124, 92, 252, 0.3);
+}
+
+.scan-verify-btn:hover {
+  background: var(--accent-purple-light);
+  box-shadow: 0 4px 16px rgba(124, 92, 252, 0.4);
+  transform: translateY(-1px);
+}
+
+.scan-verify-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ---------- Reference States ---------- */
+.scan-reference-section {
+  width: 100%;
+  max-width: 400px;
+  margin-top: auto;
+  padding-top: var(--space-xl);
+}
+
+.scan-reference-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.scan-reference-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Shared card style */
+.scan-ref-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: transform var(--transition-fast);
+}
+
+.scan-ref-card:hover {
+  transform: translateX(4px);
+}
+
+.scan-ref-card svg,
+.scan-ref-card .ref-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* VALID — purple/lavender */
+.scan-ref-card.valid {
+  background: rgba(155, 127, 255, 0.25);
+  color: var(--accent-purple-light);
+}
+
+/* INVALID — salmon/pink */
+.scan-ref-card.invalid {
+  background: rgba(248, 113, 113, 0.2);
+  color: var(--accent-red);
+}
+
+/* ALREADY USED — amber/orange */
+.scan-ref-card.used {
+  background: rgba(251, 191, 36, 0.2);
+  color: var(--accent-amber);
+}
+
+/* ---------- Scanned Today Counter ---------- */
+.scan-footer {
+  padding: var(--space-lg) var(--space-xl);
+  text-align: center;
+}
+
+.scan-counter {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.scan-counter span {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ---------- Scan Result Overlay ---------- */
+.scan-result-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
+}
+
+.scan-result-card {
+  width: 90%;
+  max-width: 340px;
+  padding: var(--space-2xl);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  animation: fadeInUp 0.3s ease;
+}
+
+.scan-result-card.valid {
+  background: rgba(155, 127, 255, 0.15);
+  border: 1px solid rgba(155, 127, 255, 0.3);
+}
+
+.scan-result-card.invalid {
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.scan-result-card.used {
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.scan-result-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.scan-result-card.valid .scan-result-icon {
+  color: var(--accent-purple-light);
+}
+
+.scan-result-card.invalid .scan-result-icon {
+  color: var(--accent-red);
+}
+
+.scan-result-card.used .scan-result-icon {
+  color: var(--accent-amber);
+}
+
+.scan-result-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.scan-result-card.valid .scan-result-title {
+  color: var(--accent-purple-light);
+}
+
+.scan-result-card.invalid .scan-result-title {
+  color: var(--accent-red);
+}
+
+.scan-result-card.used .scan-result-title {
+  color: var(--accent-amber);
+}
+
+.scan-result-msg {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.scan-result-dismiss {
+  padding: var(--space-md) var(--space-2xl);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-fast);
+  margin-top: var(--space-sm);
+}
+
+.scan-result-dismiss:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-purple);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .scan-viewfinder-wrapper {
+    max-width: 280px;
+  }
+
+  .scan-header {
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .scan-body {
+    padding: var(--space-xl) var(--space-lg);
+  }
+
+  .scan-ref-card {
+    font-size: var(--font-size-sm);
+    padding: var(--space-sm) var(--space-md);
+  }
+}

@@ -1,0 +1,203 @@
+/* Layout overrides for form pages with fixed header and footer */
+.form-page-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-header-fixed {
+  padding: var(--space-xl) var(--space-2xl);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  flex-shrink: 0;
+}
+
+.page-header-fixed .page-title {
+  margin: 0;
+  font-size: var(--font-size-2xl);
+}
+
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-2xl);
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* Form Cards */
+.form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-card-title {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+/* Form Elements */
+.input-group label {
+  text-transform: none; /* Override auth page styling if needed */
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.input-group input,
+.input-group textarea,
+.select-wrapper select {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md) var(--space-lg);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.input-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.input-group input:focus,
+.input-group textarea:focus,
+.select-wrapper select:focus {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 0 2px var(--accent-purple-glow);
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Select wrapper */
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.select-wrapper select:invalid,
+.select-wrapper select option[value=""] {
+  color: var(--text-secondary);
+}
+
+.select-icon {
+  position: absolute;
+  right: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+/* Row Layout */
+.form-row {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.half-width {
+  flex: 1;
+}
+
+/* Input with Left Icon */
+.input-with-icon-left {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon-left .input-icon {
+  position: absolute;
+  left: var(--space-md);
+  width: 18px;
+  height: 18px;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.input-with-icon-left input {
+  padding-left: calc(var(--space-md) * 2 + 18px);
+}
+
+/* Fixed Bottom Bar */
+.form-bottom-bar {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  padding: var(--space-md) var(--space-2xl);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.bottom-bar-content {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-md);
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-cancel:hover {
+  background: var(--bg-tertiary);
+}
+
+.btn-save {
+  background: var(--accent-purple);
+  border: none;
+  color: #fff;
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-save:hover {
+  background: var(--accent-purple-light);
+}
+
+/* Date and Time input specific styles to ensure icons match theme */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+}
